@@ -336,5 +336,20 @@ sub report_check_for_errors {
     return %errors;
 }
 
+sub get_body_handler_for_problem {
+    my ($self, $row) = @_;
+
+    foreach my $body (split(/,/, $row->bodies_str)) {
+        foreach my $avail ( FixMyStreet::Cobrand->available_cobrand_classes ) {
+            my $class = FixMyStreet::Cobrand->get_class_for_moniker($avail->{moniker});
+            my $cobrand = $class->new( ref $self ? { %$self } : {} );
+            next unless $cobrand->can('council_id');
+            # $c->log->debug( sprintf "Set body to '%s' and cobrand to '%s', which has council id %s", $body, $cobrand->moniker, $cobrand->council_id );
+            return $cobrand if int($body) eq $cobrand->council_id;
+        }
+    }
+    return $self->next::method;
+}
+
 1;
 

@@ -722,6 +722,28 @@ sub _fallback_body_sender {
     return { method => 'Email' };
 };
 
+=head2 get_body_handler_for_problem
+
+Returns a cobrand for the body that a problem was logged against.
+(See L<FixMyStreet::DB::Result::Problem/get_cobrand_body_handler>
+for more details on the possible distinctions here.)
+
+    my $handler = $cobrand->get_body_handler_for_problem($row);
+    my $handler = $cobrand_class->get_body_handler_for_problem($row);
+
+The default behaviour is to just return the cobrand object (or an instance of
+the cobrand class).
+
+However some cobrands, such as ::UK may choose to defer problems to subclasses,
+based on C<bodies_str> etc.
+
+=cut
+
+sub get_body_handler_for_problem {
+    my ($self, $row) = @_;
+    return ref $self ? $self : $self->new;
+}
+
 sub example_places {
     my $e = FixMyStreet->config('EXAMPLE_PLACES') || [ 'High Street', 'Main Street' ];
     $e = [ map { Encode::decode('UTF-8', $_) } @$e ];

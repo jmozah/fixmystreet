@@ -705,7 +705,20 @@ sub processed_summary_string {
 
 sub duration_string {
     my ( $problem, $c ) = @_;
-    my $body = $problem->body( $c );
+    my $body;
+    my $handler = $problem->get_cobrand_body_handler();
+    # If the report was sent to a cobrand that we're not currently on,
+    # include a link to view it on the responsible cobrand.
+    # This only occurs if the report was sent to a single body and we're not already
+    # using the body name as a link to all problem reports.
+    my $bodies_str_ids = $problem->bodies_str_ids;
+    if ( !mySociety::Config::get('AREA_LINKS_FROM_PROBLEMS') && scalar(@$bodies_str_ids) == 1 &&
+         $handler->is_council && $handler->moniker ne $c->cobrand->moniker ){
+        my $url = sprintf("%s%s", $handler->base_url, $problem->url);
+        $body = sprintf("<a href='%s'>%s</a>", $url, $problem->body( $c ));
+    } else {
+        $body = $problem->body( $c );
+    }
     return sprintf(_('Sent to %s %s later'), $body,
         Utils::prettify_duration($problem->whensent->epoch - $problem->confirmed->epoch, 'minute')
     );
@@ -926,6 +939,23 @@ sub get_cobrand_logged {
     my $self = shift;
     my $cobrand_class = FixMyStreet::Cobrand->get_class_for_moniker( $self->cobrand );
     return $cobrand_class->new;
+}
+
+=head2 get_cobrand_body_handler
+
+Get a cobrand object for the body the problem has been logged against.
+
+e.g.
+    * if the problem was logged at fix.bromley.gov.uk it will return ::Bromley
+    * if a problem was logged at www.fixmystreet.com for the Bromley area, it
+      will *also* return ::Bromley
+
+=cut
+
+sub get_cobrand_body_handler {
+    my $self = shift;
+    my $cobrand_class = FixMyStreet::Cobrand->get_class_for_moniker( $self->cobrand );
+    return $cobrand_class->get_body_handler_for_problem($self);
 }
 
 
