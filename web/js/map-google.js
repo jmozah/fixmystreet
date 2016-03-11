@@ -119,9 +119,6 @@ function fms_map_clicked(e) {
     }
 
     $('#side').hide();
-    if (typeof heightFix !== 'undefined') {
-        heightFix('#report-a-problem-sidebar', '.content', 26);
-    }
 
     // If we clicked the map somewhere inconvenient
     // TODO

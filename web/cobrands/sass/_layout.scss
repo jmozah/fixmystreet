@@ -236,23 +236,59 @@ h1 {
 
 // map page - has fixed header and different styling
 body.mappage {
+
+  .wrapper .table-cell,
+  .nav-wrapper {
+    // No need for the table-cell stuff now we're using absolute positioning
+    display: block;
+  }
+
   .container {
     width: auto;
+    position: static;
   }
 
   .content {
-    float: $left;
-    padding: 1em 1em 10em;
+    width: auto;
+    padding: 0;
     margin: 0;
   }
 
+  #site-header {
+    // With the exception of the #site-logo child, the rest of
+    // #site-header gets entirely hidden behind .nav-wrapper-2
+    position: absolute;
+    z-index: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4em; // height of header
+  }
+
   #site-logo {
+    position: absolute;
     #{$left}: 12px;
+    // Also inherits...
+    //   `top: 0.9em`
+    //   `z-index: 3`
+    // ...from the non-mappage version, above
   }
 
   #main-nav {
     width: auto;
     margin-#{$right}: 1em;
+  }
+
+  .nav-wrapper {
+    .nav-wrapper-2 {
+      position: absolute;
+      z-index: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px; // 4em@16px (height of header), minus 4px for border-top
+      background: $map_nav_bg;
+    }
   }
 
   .nav-menu--main a, .nav-menu--main span {
@@ -264,15 +300,32 @@ body.mappage {
     margin: 0.9em 0.25em 0.85em;
   }
 
-  .nav-wrapper{
-    .nav-wrapper-2{
-      position: fixed;
-      background: $map_nav_bg;
-    }
+  #map_box {
+    position: absolute;
+    z-index: auto;
+    top: 4em; // height of header
+    bottom: 0;
+    right: 0;
+    left: 29em; // width of sidebar
+    width: auto; // stretch from right edge of sidebar to left edge of window
+    height: auto; // stretch from bottom of header to bottom of window
+    margin: 0;
   }
 
-  #site-logo{
-    position: fixed;
+  // :TODO: This element only exists on the /around mappage
+  // so we either need to add #side to the individual report
+  // pages, or we need to pick a new element to use instead.
+  #side {
+    position: absolute;
+    z-index: auto;
+    top: 4em; // height of header
+    left: 0;
+    bottom: 0;
+    width: 27em; // width of sidebar, minus 2em padding
+    padding: 1em;
+    overflow: auto; // vertical scrollbar when list is taller than window
+    background-color: #fff; // since no longer in the flow inside .content
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
 
   #user-meta {

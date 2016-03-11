@@ -11,25 +11,6 @@ function isR2L() {
 }
 
 /*
- * general height fixing function
- *
- * elem1: element to check against
- * elem2: target element
- * offset: this will be added (if present) to the final value, useful for height errors
- */
-function heightFix(elem1, elem2, offset, force) {
-    var h1 = $(elem1).height(),
-        h2 = $(elem2).height();
-    if (offset === undefined) {
-        offset = 0;
-    }
-    if (h1 > h2 || force) {
-        $(elem2).css( { 'min-height': h1+offset } );
-    }
-}
-
-
-/*
  * very simple tab function
  *
  * elem: trigger element, must have an href attribute (so probably needs to be an <a>)
@@ -152,11 +133,6 @@ $(function(){
     /*
      * Report a problem page
      */
-    //desktop
-    if ($('#report-a-problem-sidebar').is(':visible')) {
-        heightFix('#report-a-problem-sidebar', '.content', 26);
-    }
-
     //show/hide notes on mobile
     $('.mobile #report-a-problem-sidebar').after('<a href="#" class="rap-notes-trigger button-fwd">' + translation_strings.how_to_send + '</a>').hide();
     $('.rap-notes-trigger').click(function(e){
@@ -539,25 +515,6 @@ $.fn.drawer = function(id, ajax) {
         $('a[rel=fancy]').fancybox({
             'overlayColor': '#000000'
         });
-    }
-
-    /*
-     * heightfix the desktop .content div
-     *
-     * this must be kept near the end so that the
-     * rendered height is used after any page manipulation (such as tabs)
-     */
-    if (!$('html.mobile').length) {
-        if (!($('body').hasClass('fullwidthpage'))){
-            var offset = -15 * 16;
-            if (cobrand == 'oxfordshire') {
-                // Oxfordshire uses box-sizing:border-box and padding to work out height
-                offset = 0;
-            }
-            heightFix(window, '.content', offset, 1);
-            // in case we have a map that isn't full screen
-            map_fix();
-        }
     }
 
 });
