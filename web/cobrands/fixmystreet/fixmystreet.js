@@ -90,13 +90,10 @@ $(function(){
                     height: 'auto',
                     margin: 0
                 });
-                $('#fms_pan_zoom').css({ top: '2.75em' });
                 $('.big-green-banner')
                     .addClass('mobile-map-banner')
                     .appendTo('#map_box')
                     .html('<a href="/">' + translation_strings.home + '</a> ' + translation_strings.place_pin_on_map);
-            } else {
-                $('#fms_pan_zoom').css({ top: '0.5em' });
             }
             $('span.report-a-problem-btn').on('click.reportBtn', function(){
                 $('html, body').animate({scrollTop:0}, 500);
@@ -124,7 +121,6 @@ $(function(){
                     .prependTo('#side')
                     .html(banner_text);
             }
-            $('#fms_pan_zoom').css({ top: '4.75em' });
             $('span.report-a-problem-btn').css({ cursor:'' }).off('.reportBtn');
         }
         last_type = type;

@@ -20,23 +20,23 @@ input[type=text],
 input[type=password],
 input[type=email],
 input[type=file],
-textarea, 
+textarea,
 select { background: #fff; border: 1px solid #768b9a; border-color: #768b9a #d1dee8 #d1dee8 #768b9a; color: #333; font-family: "Gill Sans MT", "Gill Sans", Arial, 'Helvetica Neue', Helvetica, sans-serif; padding: 8px;
 @include border-radius(0); }
 
 .green-btn, button.green-btn, input.green-btn {
-    background: #5b7189; 
-    border: 1px solid #8e9eb0; 
-    color: #fff; 
-    font-family: 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', Calibri, sans-serif; 
-    font-weight: normal; 
-    margin: 0; min-height: 23px; 
+    background: #5b7189;
+    border: 1px solid #8e9eb0;
+    color: #fff;
+    font-family: 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', Calibri, sans-serif;
+    font-weight: normal;
+    margin: 0; min-height: 23px;
     /* outline: 1px solid #405062; */
-    padding: 4px 8px; 
-    text-transform: uppercase; 
+    padding: 4px 8px;
+    text-transform: uppercase;
 }
-.green-btn:hover, button.green-btn:hover, input.green-btn:hover { 
-    background: #5b7189; border: 1px solid #8e9eb0; 
+.green-btn:hover, button.green-btn:hover, input.green-btn:hover {
+    background: #5b7189; border: 1px solid #8e9eb0;
 }
 .form-txt-submit-box input[type=submit] {
     padding-top: 0; padding-bottom: 0; width: auto;
@@ -46,11 +46,11 @@ select { background: #fff; border: 1px solid #768b9a; border-color: #768b9a #d1d
 h1, h2, h3, h4, h5, h6, legend { font-family: 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', Calibri, sans-serif; }
 body { color: #333; font-family: "Gill Sans MT", "Gill Sans", Arial, 'Helvetica Neue', Helvetica, sans-serif; line-height: 1.4; background-color: $base_bg;}
 
-.nav-wrapper-2, 
+.nav-wrapper-2,
 body.mappage .nav-wrapper .nav-wrapper-2,
 body.frontpage .nav-wrapper-2 {
     border: 0;
-    border-top: solid 4px $hart_primary;  /* otherwise overridden in base layout.scss 
+    border-top: solid 4px $hart_primary;  /* otherwise overridden in base layout.scss
                                              for some templates only */
     min-height: auto;
     background-color: $hart_primary;
@@ -204,7 +204,7 @@ body.frontpage #site-logo,
       margin-left: 1em;
       text-align: center;
 
-      span { 
+      span {
         display: inline;
       }
 
@@ -256,10 +256,10 @@ body.frontpage .table-cell .content {
     height: auto;
     overflow: hidden;
     padding: 15px 15px 50px 15px;
-    color:#fff; 
+    color:#fff;
 
     @media only screen and (min-width:48em) {
-        margin-left:-15px; 
+        margin-left:-15px;
         padding: 35px 25px 40px 25px;
     }
 
@@ -306,10 +306,10 @@ body.frontpage .table-cell .content {
     p {
       margin: 0;
     }
-    a:link, a:visited { 
-        color: #fff; text-decoration: none; 
+    a:link, a:visited {
+        color: #fff; text-decoration: none;
     }
-    a:hover, a:active { 
+    a:hover, a:active {
         text-decoration: underline;
     }
 
@@ -335,30 +335,30 @@ body.frontpage .table-cell .content {
     }
 
     .footer-nav,  {
-        height:35px; 
+        height:35px;
 
         margin-left: 0;
         margin-bottom: 0;
 
         @media only screen and (min-width:48em) {
-            float: right; 
+            float: right;
         }
 
-        li { 
+        li {
             list-style-type: none;
-            float: left; 
+            float: left;
             width: 50%;
             margin-bottom: 0;
 
             a {
                 display: block;
-                border-bottom:1px solid #797f7f; 
+                border-bottom:1px solid #797f7f;
                 padding: 10px 0;
                 margin-left: 10px;
                 margin-right: 10px;
             }
             @media only screen and (min-width:48em) {
-                border-right:1px solid #fff; 
+                border-right:1px solid #fff;
                 width: auto;
                 a {
                     border-bottom: none;
@@ -366,8 +366,8 @@ body.frontpage .table-cell .content {
                     margin-left: 0;
                     margin-right: 0;
                 }
-                &:last-child { 
-                    border: none; 
+                &:last-child {
+                    border: none;
                     padding-right: 0;
                 }
             }
@@ -452,10 +452,6 @@ body.mappage .hart-footer-wrapper {
 
 .item-list--reports__item small {
     display: inline;
-}
-
-#fms_pan_zoom {
-    top: 12em;
 }
 
 #hart_hants_note {
