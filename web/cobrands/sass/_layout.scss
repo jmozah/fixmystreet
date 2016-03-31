@@ -286,8 +286,12 @@ body.mappage {
       top: 0;
       left: 0;
       right: 0;
-      height: 60px; // 4em@16px (height of header), minus 4px for border-top
       background: $map_nav_bg;
+
+      // Count the 4px border-top as part of the height (4em)
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
     }
   }
 
@@ -312,10 +316,7 @@ body.mappage {
     margin: 0;
   }
 
-  // :TODO: This element only exists on the /around mappage
-  // so we either need to add #side to the individual report
-  // pages, or we need to pick a new element to use instead.
-  #side {
+  #map_sidebar {
     position: absolute;
     z-index: auto;
     top: 4em; // height of header
