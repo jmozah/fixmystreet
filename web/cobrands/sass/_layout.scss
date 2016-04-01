@@ -322,8 +322,8 @@ body.mappage {
     top: 4em; // height of header
     left: 0;
     bottom: 0;
-    width: 27em; // width of sidebar, minus 2em padding
-    padding: 1em;
+    width: 27em; // width of sidebar
+    padding: 1em 1em 3em 1em; // extra padding-bottom to clear the .shadow-wrap element
     overflow: auto; // vertical scrollbar when list is taller than window
     background-color: #fff; // since no longer in the flow inside .content
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -835,24 +835,14 @@ body.authpage {
     margin-bottom: 0;
 }
 
-// pokes over the RHS with a little triangle
 .big-green-banner {
   top: auto;
-  #{$right}: -1.25em;
-  margin-#{$left}: -2em;
+  margin: (-1em/1.375) (-1em/1.375) 0 (-1em/1.375);
   font-size: 1.375em;
-  padding: flip(1em 3em 1em 1em, 1em 1em 1em 3em);
+  padding: flip(1em 2em 1em 1em, 1em 1em 1em 2em);
   background: $col_click_map inline-image("../fixmystreet/images/chevron-white-#{$right}.svg") $right center no-repeat;
-  background-size: 27px+36px 33px;
-  &:before {
-    left: flip(auto, 0);
-    right: flip(0, auto);
-    top: -0.5em;
-    position: absolute;
-    border-top: 0.5em solid transparent;
-    border-#{$left}: 0.5em solid $col_click_map_dark;
-    border-bottom:none;
-  }
+  background-size: 43px 33px;
+
   span {
     display: block;
     font-size: 80%;
@@ -901,14 +891,6 @@ body.authpage {
     background-image:url(/cobrands/fixmystreet/images/ie_fixed.gif);
     background-position:center 0.75em;
   }
-}
-
-
-// for pulling elements fullwidth regardless
-// of .contents' padding
-.full-width{
-  margin: flip(0 0 0em -1em, 0 -1em 0 0);
-  width: 29em;
 }
 
 /*FORMS*/
