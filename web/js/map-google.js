@@ -187,13 +187,6 @@ function fms_map_initialize() {
     paddingDiv.index = 0;
     fixmystreet.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(paddingDiv);
 
-    if (fixmystreet.state_map && fixmystreet.state_map == 'full') {
-        // TODO Work better with window resizing, this is pretty 'set up' only at present
-        var q = fixmystreet_midpoint();
-        // Need to try and fake the 'centre' being 75% from the edge
-        fixmystreet.map.panBy(-q, -25);
-    }
-
     if (document.getElementById('mapForm')) {
         var l = google.maps.event.addListener(fixmystreet.map, 'click', fms_map_clicked);
     }

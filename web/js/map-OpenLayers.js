@@ -72,9 +72,6 @@ function fixmystreet_zoomToBounds(bounds) {
         z = 13;
     }
     fixmystreet.map.setCenter(center, z);
-    if (fixmystreet.state_map && fixmystreet.state_map == 'full') {
-        fixmystreet.map.pan(-fixmystreet_midpoint(), -25, { animate: false });
-    }
 }
 
 function fms_markers_list(pins, transform) {
@@ -431,10 +428,6 @@ $(function(){
         fixmystreet.map.setCenter(centre, fixmystreet.zoom || 3);
     }
 
-    if (fixmystreet.state_map && fixmystreet.state_map == 'full') {
-        fixmystreet.map.pan(-fixmystreet_midpoint(), -25, { animate: false });
-    }
-
     if (document.getElementById('mapForm')) {
         var click = new OpenLayers.Control.Click();
         fixmystreet.map.addControl(click);
@@ -520,12 +513,8 @@ OpenLayers.Control.PanZoomFMS = OpenLayers.Class(OpenLayers.Control.PanZoom, {
             case "zoomin":
             case "zoomout":
             case "zoomworld":
-                var mid_point = 0;
-                if (fixmystreet.state_map && fixmystreet.state_map == 'full') {
-                    mid_point = fixmystreet_midpoint();
-                }
                 var size = this.map.getSize(),
-                    xy = { x: size.w / 2 + mid_point, y: size.h / 2 };
+                    xy = { x: size.w / 2, y: size.h / 2 };
                 switch (btn.action) {
                     case "zoomin":
                         this.map.zoomTo(this.map.getZoom() + 1, xy);
@@ -567,14 +556,6 @@ OpenLayers.Control.PermalinkFMS = OpenLayers.Class(OpenLayers.Control.Permalink,
         }
 
         var center = this.map.getCenter();
-        if ( center && fixmystreet.state_map && fixmystreet.state_map == 'full' ) {
-            // Translate the permalink co-ords so that 'centre' is accurate
-            var mid_point = fixmystreet_midpoint();
-            var p = this.map.getViewPortPxFromLonLat(center);
-            p.x += mid_point;
-            p.y += 25;
-            center = this.map.getLonLatFromViewPortPx(p);
-        }
 
         var zoom = this.map.getZoom();
         if ( alter_zoom ) {
@@ -750,9 +731,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
                     new OpenLayers.Projection("EPSG:4326"),
                     fixmystreet.map.getProjectionObject()
                 );
-                var p = fixmystreet.map.getViewPortPxFromLonLat(lonlat);
-                p.x -= midpoint_box_excluding_column(o, w, bo, $map_boxx.width());
-                lonlat = fixmystreet.map.getLonLatFromViewPortPx(p);
+                var lonlat = fixmystreet.map.getViewPortPxFromLonLat(lonlat);
                 fixmystreet.map.panTo(lonlat);
             }
         }
