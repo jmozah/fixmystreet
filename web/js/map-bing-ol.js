@@ -4,10 +4,7 @@ function _set_map_config() {
         permalink_id = 'map_permalink';
     }
 
-    var nav_opts = { zoomWheelEnabled: false };
-    if (fixmystreet.page == 'around' && $('html').hasClass('mobile')) {
-        nav_opts = {};
-    }
+    var nav_opts = {};
     fixmystreet.nav_control = new OpenLayers.Control.Navigation(nav_opts);
 
     fixmystreet.controls = [
