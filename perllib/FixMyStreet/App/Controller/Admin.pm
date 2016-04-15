@@ -71,7 +71,7 @@ sub index : Path : Args(0) {
         return $c->cobrand->admin();
     }
 
-    my $problems = $c->cobrand->problems->summary_count;
+    my $problems = $c->cobrand->admin_problems->summary_count;
 
     my %prob_counts =
       map { $_->state => $_->get_column('state_count') } $problems->all;
@@ -82,7 +82,7 @@ sub index : Path : Args(0) {
     $c->stash->{problems} = \%prob_counts;
     $c->stash->{total_problems_live} += $prob_counts{$_} ? $prob_counts{$_} : 0
         for ( FixMyStreet::DB::Result::Problem->visible_states() );
-    $c->stash->{total_problems_users} = $c->cobrand->problems->unique_users;
+    $c->stash->{total_problems_users} = $c->cobrand->admin_problems->unique_users;
 
     my $comments = $c->cobrand->updates->summary_count;
 
@@ -130,7 +130,7 @@ sub index : Path : Args(0) {
     $c->stash->{questionnaires} = \%questionnaire_counts;
 
     if ($c->get_param('show_categories')) {
-        $c->stash->{categories} = $c->cobrand->problems->categories_summary();
+        $c->stash->{categories} = $c->cobrand->admin_problems->categories_summary();
     }
 
     $c->stash->{total_bodies} = $c->model('DB::Body')->count();
@@ -156,7 +156,7 @@ sub timeline : Path( 'timeline' ) : Args(0) {
     $c->model('DB')->schema->storage->sql_maker->quote_char( '"' );
     $c->model('DB')->schema->storage->sql_maker->name_sep( '.' );
 
-    my $probs = $c->cobrand->problems->timeline;
+    my $probs = $c->cobrand->admin_problems->timeline;
 
     foreach ($probs->all) {
         push @{$time{$_->created->epoch}}, { type => 'problemCreated', date => $_->created, obj => $_ };
@@ -588,7 +588,7 @@ sub reports : Path('reports') {
             ];
         }
 
-        my $problems = $c->cobrand->problems->search(
+        my $problems = $c->cobrand->admin_problems->search(
             $query,
             {
                 rows => 50,
@@ -639,7 +639,7 @@ sub reports : Path('reports') {
 
     } else {
 
-        my $problems = $c->cobrand->problems->search(
+        my $problems = $c->cobrand->admin_problems->search(
             $query,
             { order_by => $order, rows => 50 }
         )->page( $p_page );
@@ -655,7 +655,7 @@ sub reports : Path('reports') {
 sub report_edit : Path('report_edit') : Args(1) {
     my ( $self, $c, $id ) = @_;
 
-    my $problem = $c->cobrand->problems->search( { id => $id } )->first;
+    my $problem = $c->cobrand->admin_problems->search( { id => $id } )->first;
 
     $c->detach( '/page_error_404_not_found' )
       unless $problem;
@@ -1162,7 +1162,7 @@ sub user_edit : Path('user_edit') : Args(1) {
 sub flagged : Path('flagged') : Args(0) {
     my ( $self, $c ) = @_;
 
-    my $problems = $c->cobrand->problems->search( { flagged => 1 } );
+    my $problems = $c->cobrand->admin_problems->search( { flagged => 1 } );
 
     # pass in as array ref as using same template as search_reports
     # which has to use an array ref for sql quoting reasons
@@ -1249,7 +1249,7 @@ sub stats : Path('stats') : Args(0) {
             );
         }
 
-        my $p = $c->cobrand->problems->to_body($c->get_param('body'))->search(
+        my $p = $c->cobrand->admin_problems->to_body($c->get_param('body'))->search(
             {
                 -AND => [
                     $field => { '>=', $start_date},

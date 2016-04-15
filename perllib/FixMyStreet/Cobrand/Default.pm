@@ -57,6 +57,18 @@ sub problems {
     return $self->problems_restriction($self->{c}->model('DB::Problem'));
 }
 
+=head1 admin_problems
+
+Returns a ResultSet of Problems, potentially restricted to a subset if we're on
+a cobrand that only wants some of the data to be visible in the admin.
+
+=cut
+
+sub admin_problems {
+    my $self = shift;
+    return $self->admin_problems_restriction($self->{c}->model('DB::Problem'));
+}
+
 =head1 updates
 
 Returns a ResultSet of Comments, potentially restricted to a subset if we're on
@@ -69,14 +81,20 @@ sub updates {
     return $self->updates_restriction($self->{c}->model('DB::Comment'));
 }
 
-=head1 problems_restriction/updates_restriction
+=head1 problems_restriction/admin_problems_restriction/updates_restriction
 
 Used to restricts reports and updates in a cobrand in a particular way. Do
-nothing by default.
+nothing by default. Different restrictions can be applied to the public views
+on the site and the admin pages.
 
 =cut
 
 sub problems_restriction {
+    my ($self, $rs) = @_;
+    return $rs;
+}
+
+sub admin_problems_restriction {
     my ($self, $rs) = @_;
     return $rs;
 }

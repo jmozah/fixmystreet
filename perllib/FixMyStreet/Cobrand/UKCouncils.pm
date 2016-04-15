@@ -36,6 +36,11 @@ sub updates_restriction {
     return $rs->to_body($self->council_id);
 }
 
+sub admin_problems_restriction {
+    my ($self, $rs) = @_;
+    return $rs->to_body($self->council_id);
+}
+
 sub base_url {
     my $self = shift;
     my $base_url = FixMyStreet->config('BASE_URL');
