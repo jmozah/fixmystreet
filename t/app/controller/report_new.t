@@ -1342,17 +1342,6 @@ subtest "test Hart" => sub {
                 $mech->content_contains( $base . '/report/' .
                     $report->id, 'confirm page links to correct site' );
 
-                if ( $test->{national} ) {
-                    # Shouldn't be found, as it was a county problem
-                    FixMyStreet::override_config {
-                        ALLOWED_COBRANDS => [ 'hart', 'fixmystreet' ],
-                    }, sub {
-                        is $mech->get( '/report/' . $report->id )->code, 404, "report not found";
-                    };
-
-                    # But should be on the main site
-                    $mech->host( 'www.fixmystreet.com' );
-                }
                 FixMyStreet::override_config {
                     ALLOWED_COBRANDS => [ 'hart', 'fixmystreet' ],
                 }, sub {

@@ -31,11 +31,6 @@ sub restriction {
     return { cobrand => shift->moniker };
 }
 
-sub problems_restriction {
-    my ($self, $rs) = @_;
-    return $rs->to_body($self->council_id);
-}
-
 sub updates_restriction {
     my ($self, $rs) = @_;
     return $rs->to_body($self->council_id);
@@ -103,8 +98,34 @@ sub reports_body_check {
 sub recent_photos {
     my ( $self, $area, $num, $lat, $lon, $dist ) = @_;
     $num = 2 if $num == 3;
-    return $self->problems->recent_photos( $num, $lat, $lon, $dist );
+    return $self->problems->to_body($self->council_id)->recent_photos( $num, $lat, $lon, $dist );
 }
+
+sub front_stats_data {
+    my ( $self ) = @_;
+
+    my $recency         = '1 week';
+    my $shorter_recency = '3 days';
+
+    my $fixed   = $self->problems->to_body($self->council_id)->recent_fixed();
+    my $updates = $self->problems->to_body($self->council_id)->number_comments();
+    my $new     = $self->problems->to_body($self->council_id)->recent_new( $recency );
+
+    if ( $new > $fixed && $self->shorten_recency_if_new_greater_than_fixed ) {
+        $recency = $shorter_recency;
+        $new     = $self->problems->to_body($self->council_id)->recent_new( $recency );
+    }
+
+    my $stats = {
+        fixed   => $fixed,
+        updates => $updates,
+        new     => $new,
+        recency => $recency,
+    };
+
+    return $stats;
+}
+
 
 # Returns true if the cobrand owns the problem.
 sub owns_problem {

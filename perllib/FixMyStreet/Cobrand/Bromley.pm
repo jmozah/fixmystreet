@@ -70,7 +70,7 @@ sub pin_colour {
 sub recent_photos {
     my ( $self, $area, $num, $lat, $lon, $dist ) = @_;
     $num = 3 if $num > 3 && $area eq 'alert';
-    return $self->problems->recent_photos( $num, $lat, $lon, $dist );
+    return $self->problems->to_body($self->council_id)->recent_photos( $num, $lat, $lon, $dist );
 }
 
 sub send_questionnaires {
