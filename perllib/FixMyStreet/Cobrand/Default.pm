@@ -743,8 +743,6 @@ sub _fallback_body_sender {
 =head2 get_body_handler_for_problem
 
 Returns a cobrand for the body that a problem was logged against.
-(See L<FixMyStreet::DB::Result::Problem/get_cobrand_body_handler>
-for more details on the possible distinctions here.)
 
     my $handler = $cobrand->get_body_handler_for_problem($row);
     my $handler = $cobrand_class->get_body_handler_for_problem($row);

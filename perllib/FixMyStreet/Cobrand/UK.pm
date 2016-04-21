@@ -339,17 +339,36 @@ sub report_check_for_errors {
 sub get_body_handler_for_problem {
     my ($self, $row) = @_;
 
-    foreach my $body (split(/,/, $row->bodies_str)) {
-        foreach my $avail ( FixMyStreet::Cobrand->available_cobrand_classes ) {
-            my $class = FixMyStreet::Cobrand->get_class_for_moniker($avail->{moniker});
-            my $cobrand = $class->new( ref $self ? { %$self } : {} );
-            next unless $cobrand->can('council_id');
-            # $c->log->debug( sprintf "Set body to '%s' and cobrand to '%s', which has council id %s", $body, $cobrand->moniker, $cobrand->council_id );
-            return $cobrand if int($body) eq $cobrand->council_id;
-        }
+    my $cobrands = {};
+    foreach my $avail ( FixMyStreet::Cobrand->available_cobrand_classes ) {
+        my $class = FixMyStreet::Cobrand->get_class_for_moniker($avail->{moniker});
+        my $cobrand = $class->new({});
+        next unless $cobrand->can('council_id');
+        $cobrands->{$cobrand->council_id} = $cobrand;
     }
+
+    foreach my $body (split(/,/, $row->bodies_str)) {
+        next unless defined $body;
+        return $cobrands->{$body} if defined $cobrands->{$body};
+    }
+
     return $self->next::method;
 }
+
+sub show_link_to_council_cobrand {
+    my ( $self, $c, $problem ) = @_;
+    # If the report was sent to a cobrand that we're not currently on,
+    # include a link to view it on the responsible cobrand.
+    # This only occurs if the report was sent to a single body and we're not already
+    # using the body name as a link to all problem reports.
+    my $handler = $self->get_body_handler_for_problem($problem);
+    $c->log->debug( sprintf "bodies: %s areas: %s self: %s handler: %s", $problem->bodies_str, $problem->areas, $self->moniker, $handler->moniker );
+    my $bodies_str_ids = $problem->bodies_str_ids;
+    return !mySociety::Config::get('AREA_LINKS_FROM_PROBLEMS') &&
+           scalar(@$bodies_str_ids) == 1 && $handler->is_council &&
+           $handler->moniker ne $c->cobrand->moniker;
+}
+
 
 1;
 
