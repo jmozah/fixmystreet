@@ -270,13 +270,13 @@ sub front_stats_data {
     my $recency         = '1 week';
     my $shorter_recency = '3 days';
 
-    my $fixed   = $self->problems->recent_fixed();
-    my $updates = $self->problems->number_comments();
-    my $new     = $self->problems->recent_new( $recency );
+    my $fixed   = $self->front_stats_problems->recent_fixed();
+    my $updates = $self->front_stats_problems->number_comments();
+    my $new     = $self->front_stats_problems->recent_new( $recency );
 
     if ( $new > $fixed && $self->shorten_recency_if_new_greater_than_fixed ) {
         $recency = $shorter_recency;
-        $new     = $self->problems->recent_new( $recency );
+        $new     = $self->front_stats_problems->recent_new( $recency );
     }
 
     my $stats = {
@@ -287,6 +287,17 @@ sub front_stats_data {
     };
 
     return $stats;
+}
+
+=head2 front_stats_problems
+
+Return problems to be used for calculating stats shown on front page.
+
+=cut
+
+sub front_stats_problems {
+    my ( $self ) = @_;
+    return $self->problems;
 }
 
 =head2 disambiguate_location

@@ -193,6 +193,7 @@ sub display_location : Private {
                 colour    => $colour,
                 id        => $p->id,
                 title     => $p->title_safe,
+                problem   => $p,
             }
         } @$on_map_all, @$around_map;
     }
