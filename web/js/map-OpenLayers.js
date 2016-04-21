@@ -697,13 +697,6 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         // Store pin location in form fields, and check coverage of point
         fixmystreet_update_pin(lonlat);
 
-        // Already did this first time map was clicked, so no need to do it again.
-        if (fixmystreet.page == 'new') {
-            return;
-        }
-
-        fixmystreet.map.updateSize(); // might have done, and otherwise Firefox gets confused.
-
         // If there are notes to be displayed, add the .with-notes class
         // to make the sidebar wider.
         if($('#report-a-problem-sidebar').length){
@@ -713,34 +706,20 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         /* For some reason on IOS5 if you use the jQuery show method it
          * doesn't display the JS validation error messages unless you do this
          * or you cause a screen redraw by changing the phone orientation.
-         * NB: This has to happen after the call to show() */
+         * NB: This has to happen after the call to show() in fixmystreet_update_pin */
         if ( navigator.userAgent.match(/like Mac OS X/i)) {
             document.getElementById('side-form').style.display = 'block';
         }
         $('#side').hide();
 
-        // If we clicked the map somewhere inconvenient
-        var sidebar = $('#report-a-problem-sidebar');
-        if (sidebar.css('position') == 'absolute') {
-            var w = sidebar.width(), h = sidebar.height(),
-                o = sidebar.offset(),
-                $map_boxx = $('#map_box'), bo = $map_boxx.offset();
-            // e.xy is relative to top left of map, which might not be top left of page
-            e.xy.x += bo.left;
-            e.xy.y += bo.top;
+        fixmystreet.map.updateSize(); // required after changing the size of the map element
 
-            // 24 and 64 is the width and height of the marker pin
-            if (e.xy.y <= o.top || (e.xy.x >= o.left && e.xy.x <= o.left + w + 24 && e.xy.y >= o.top && e.xy.y <= o.top + h + 64)) {
-                // top of the page, pin hidden by header;
-                // or underneath where the new sidebar will appear
-                lonlat.transform(
-                    new OpenLayers.Projection("EPSG:4326"),
-                    fixmystreet.map.getProjectionObject()
-                );
-                var lonlat = fixmystreet.map.getViewPortPxFromLonLat(lonlat);
-                fixmystreet.map.panTo(lonlat);
-            }
-        }
+        lonlat.transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            fixmystreet.map.getProjectionObject()
+        );
+        fixmystreet.map.panDuration = 100;
+        fixmystreet.map.panTo(lonlat);
 
         $('#sub_map_links').hide();
         if ($('html').hasClass('mobile')) {
