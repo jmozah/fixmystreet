@@ -99,7 +99,7 @@ body.mappage {
     .nav-wrapper {
         .nav-wrapper-2 {
             border-top: none;
-            height: 117px; // 99px+18px for padding
+            height: 10em;
             padding: 0 10px;
             box-sizing: border-box;
         }
@@ -186,6 +186,20 @@ body.mappage {
 body.mappage {
     #zurich-footer {
         display: none;
+    }
+
+    #map_sidebar,
+    #map_box {
+      top: 10em;
+    }
+
+    #zurich-main-nav {
+      margin: 0;
+      position: absolute;
+      top: 7em;
+      z-index: 1;
+      right: 10px; // to match .nav-wrapper-2 side padding
+      left: 10px; // to match .nav-wrapper-2 side padding
     }
 }
 
