@@ -8,6 +8,7 @@ package FixMyStreet::Map::WMTSBase;
 use strict;
 use Math::Trig;
 use Utils;
+use JSON::MaybeXS;
 
 sub scales {
     my $self = shift;
@@ -41,20 +42,19 @@ sub zoom_parameters {
 # A hash of parameters used in calculations for map tiles
 sub tile_parameters {
     my $params = {
-        url        => '', # URL of the map tiles, up to the /{z}/{x}/{y} part
-        suffix     => '', # appended to tile URLs
-        size       => 256, # pixels
-        dpi        => 96,
-        origin_x   => 0,
-        origin_y   => 0,
+        url          => '', # URL of the map tiles, up to the /{z}/{x}/{y} part
+        wmts_version => '1.0.0',
+        layer_style  => '',
+        matrix_set   => '',
+        suffix       => '', # appended to tile URLs
+        size         => 256, # pixels
+        dpi          => 96,
+        inches_per_unit => 0, # See OpenLayers.INCHES_PER_UNIT for some options.
+        origin_x     => 0,
+        origin_y     => 0,
+        projection   => 'EPSG:3857', # Passed through to OpenLayers.Projection
     };
     return $params;
-}
-
-# The number of inches per unit in this map's CRS.
-# See OpenLayers.INCHES_PER_UNIT for some options.
-sub inches_per_unit {
-    return 0;
 }
 
 # This is used to determine which template to render the map with
@@ -80,7 +80,7 @@ sub reproject_to_latlon($$$) {
 sub map_tiles {
     my ($self, %params) = @_;
     my ($left_col, $top_row, $z) = @params{'x_left_tile', 'y_top_tile', 'matrix_id'};
-    my $tile_url = $self->tile_parameters->{url};
+    my $tile_url = $self->tile_base_url;
     my $tile_suffix = $self->tile_parameters->{suffix};
     my $cols = $params{cols};
     my $rows = $params{rows};
@@ -174,7 +174,7 @@ sub get_map_hash {
     my ($self, %params) = @_;
 
     @params{'x_centre_tile', 'y_centre_tile', 'matrix_id'}
-        = latlon_to_tile_with_adjust($self,
+        = $self->latlon_to_tile_with_adjust(
             @params{'latitude', 'longitude', 'zoom', 'rows', 'cols'});
 
     # centre_(row|col) is either in middle, or just to right.
@@ -188,12 +188,13 @@ sub get_map_hash {
         map {
             my $pin = { %$_ }; # shallow clone
             ($pin->{px}, $pin->{py})
-                = latlon_to_px($self, $pin->{latitude}, $pin->{longitude},
+                = $self->latlon_to_px($pin->{latitude}, $pin->{longitude},
                             @params{'x_left_tile', 'y_top_tile', 'zoom'});
             $pin;
         } @{ $params{pins} }
     ];
 
+    my @scales = $self->scales;
     return {
         %params,
         type => $self->map_type,
@@ -204,7 +205,23 @@ sub get_map_hash {
         zoomOffset => $self->zoom_parameters->{min_zoom_level},
         numZoomLevels => $self->zoom_parameters->{default_zoom},
         tile_size => $self->tile_parameters->{size},
+        tile_dpi => $self->tile_parameters->{dpi},
+        tile_url => $self->tile_parameters->{url},
+        tile_suffix => $self->tile_parameters->{suffix},
+        layer_name => $self->tile_parameters->{layer_name},
+        layer_style => $self->tile_parameters->{layer_style},
+        matrix_set => $self->tile_parameters->{matrix_set},
+        map_projection => $self->tile_parameters->{projection},
+        scales => encode_json \@scales,
     };
+}
+
+sub tile_base_url {
+    my $self = shift;
+    my $params = $self->tile_parameters;
+    return sprintf '%s/%s/%s/%s/%s',
+        $params->{url}, $params->{wmts_version}, $params->{layer_name},
+        $params->{layer_style}, $params->{matrix_set};
 }
 
 # Given a lat/lon, convert it to tile co-ordinates (precise).
@@ -222,7 +239,7 @@ sub latlon_to_tile($$$$) {
         lon => $tile_params->{origin_y}
     };
     my $res = $scales[$matrix_id] /
-        ($self->inches_per_unit * $tile_params->{dpi});
+        ($tile_params->{inches_per_unit} * $tile_params->{dpi});
         # OpenLayers.INCHES_PER_UNIT[units] * OpenLayers.DOTS_PER_INCH
 
     my $fx = ( $x - $tileOrigin->{lon} ) / ($res * $tile_params->{size});
@@ -241,7 +258,7 @@ sub latlon_to_tile_with_adjust {
     my ($self, $lat, $lon, $zoom, $rows, $cols) = @_;
     my ($x_tile, $y_tile, $matrix_id)
         = my @ret
-        = latlon_to_tile($self, $lat, $lon, $zoom);
+        = $self->latlon_to_tile($lat, $lon, $zoom);
 
     # Try and have point near centre of map, passing through if odd
     unless ($cols % 2) {
@@ -269,7 +286,7 @@ sub tile_to_latlon {
         lon => $tile_params->{origin_y}
     };
     my $res = $scales[$matrix_id] /
-        ($self->inches_per_unit * $tile_params->{dpi});
+        ($tile_params->{inches_per_unit} * $tile_params->{dpi});
         # OpenLayers.INCHES_PER_UNIT[units] * OpenLayers.DOTS_PER_INCH
 
     my $x = $fx * $res * $tile_params->{size} + $tileOrigin->{lon};
@@ -283,9 +300,9 @@ sub tile_to_latlon {
 # Given a lat/lon, convert it to pixel co-ordinates from the top left of the map
 sub latlon_to_px($$$$$$) {
     my ($self, $lat, $lon, $x_tile, $y_tile, $zoom) = @_;
-    my ($pin_x_tile, $pin_y_tile) = latlon_to_tile($self, $lat, $lon, $zoom);
-    my $pin_x = tile_to_px($self, $pin_x_tile, $x_tile);
-    my $pin_y = tile_to_px($self, $pin_y_tile, $y_tile);
+    my ($pin_x_tile, $pin_y_tile) = $self->latlon_to_tile($lat, $lon, $zoom);
+    my $pin_x = $self->tile_to_px($pin_x_tile, $x_tile);
+    my $pin_y = $self->tile_to_px($pin_y_tile, $y_tile);
     return ($pin_x, $pin_y);
 }
 
@@ -310,10 +327,10 @@ sub click_to_tile {
 # tile they were), convert to WGS84 and return.
 sub click_to_wgs84 {
     my ($self, $c, $pin_tile_x, $pin_x, $pin_tile_y, $pin_y) = @_;
-    my $tile_x = click_to_tile($self, $pin_tile_x, $pin_x);
-    my $tile_y = click_to_tile($self, $pin_tile_y, $pin_y);
+    my $tile_x = $self->click_to_tile($pin_tile_x, $pin_x);
+    my $tile_y = $self->click_to_tile($pin_tile_y, $pin_y);
     my $zoom = (defined $c->get_param('zoom') ? $c->get_param('zoom') : $self->zoom_parameters->{default_zoom});
-    my ($lat, $lon) = tile_to_latlon($self, $tile_x, $tile_y, $zoom);
+    my ($lat, $lon) = $self->tile_to_latlon($tile_x, $tile_y, $zoom);
     return ( $lat, $lon );
 }
 

@@ -20,12 +20,18 @@ sub zoom_parameters {
 sub tile_parameters {
     my $self = shift;
     my $params = {
-        url        => 'https://maps.bristol.gov.uk/arcgis/rest/services/base/2015_BCC_96dpi/MapServer/tile',
-        suffix     => '', # appended to tile URLs
-        size       => 256, # pixels
-        dpi        => 96,
-        origin_x   => 4470200,
-        origin_y   => -5220400,
+        url             => 'https://maps.bristol.gov.uk/arcgis/rest/services/base/2015_BCC_96dpi/MapServer/WMTS/tile',
+        wmts_version    => '1.0.0',
+        layer_name      => '2015_BCC_96dpi',
+        layer_style     => 'default',
+        matrix_set      => 'default028mm',
+        suffix          => '.png', # appended to tile URLs
+        size            => 256, # pixels
+        dpi             => 96,
+        inches_per_unit => 39.3701, # BNG uses metres
+        origin_x        => 4470200,
+        origin_y        => -5220400,
+        projection      => 'EPSG:27700',
     };
     return $params;
 }
@@ -44,11 +50,6 @@ sub scales {
         '750', # resolution: 0.19843789687579377
     );
     return @scales;
-}
-
-sub inches_per_unit {
-    # BNG uses metres
-    return 39.3701;
 }
 
 sub copyright {
