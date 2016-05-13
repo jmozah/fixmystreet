@@ -7,15 +7,23 @@
 // d523b431
 .nav-wrapper{
   .nav-wrapper-2{
+    position: static;
     min-height: 0;
     // e7c122a4 / 0b0a619b / - "Removed mySociety menu and positioned menu"
-    top: 9.5em;
     border-top: none;
-    padding-top: 0.75em;
+    padding-top: 0.5em;
     padding-bottom: 0.25em;
     background-color: #6b6969;
     @include background(linear-gradient(#6b6969, #555454));
   }
+}
+
+#main-nav {
+    @include clearfix();
+    width: auto;
+    max-width: 984px; // match the Stevenage header width
+    float: none;
+    padding-left: 0;
 }
 
 .ie6, .ie7 {
@@ -176,15 +184,16 @@ body.frontpage {
     .nav-wrapper-2 {
         height: auto;
     }
-    #site-header {
-        height: auto;
-    }
     // 1162d5c8 - Changed the colour of the user text when you're logged in to be more readable
     #user-meta {
         p {
             color: #fff;
         }
     }
+}
+
+#site-header {
+    display: none;
 }
 
 // d523b431
@@ -219,17 +228,6 @@ body.frontpage {
 }
 
 @media only screen and (min-width: 48em) and (max-width: 61em) {
-    // d523b431
-    #main-nav {
-        float: left;
-        padding-left: 0;
-    }
-
-    .nav-wrapper {
-        .nav-wrapper-2 {
-            @include background(linear-gradient(#222, #555 30%, #555 60%, #222));
-        }
-    }
     // f432a72d - moved sticky sidebars down a bit to account for the larger header
     body.twothirdswidthpage {
         .content {
