@@ -334,8 +334,9 @@ body.mappage {
 
     &.with-notes {
       width: 42em;
-      background: -webkit-linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
-      background: linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
+      // TODO: Should have a bitmap image fallback for old browsers!!
+      background-image: -webkit-linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
+      background-image: linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
     }
   }
 
@@ -856,7 +857,7 @@ textarea.form-error {
 
 // If the form is .with-notes, limit the width of the inputs
 // to make space for the #report-a-problem-sidebar.
-#report-a-problem-main {
+#side-form {
   .with-notes & {
     width: 26em;
   }
@@ -871,6 +872,7 @@ textarea.form-error {
   .with-notes & {
     float: right;
     width: 13em;
+    margin-right: -15em;
   }
 
   div {
