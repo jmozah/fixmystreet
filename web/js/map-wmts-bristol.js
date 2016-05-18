@@ -199,3 +199,14 @@ OpenLayers.Strategy.ReprojectBBOX = OpenLayers.Class(OpenLayers.Strategy.BBOX, {
 
     CLASS_NAME: "OpenLayers.Strategy.ReprojectBBOX"
 });
+
+function fms_marker_size_for_zoom(zoom) {
+    console.log(zoom);
+    if (zoom >= 7) {
+        return 'normal';
+    } else if (zoom >= 4) {
+        return 'small';
+    } else {
+        return 'mini';
+    }
+}
