@@ -339,17 +339,14 @@ sub report_check_for_errors {
 sub get_body_handler_for_problem {
     my ($self, $row) = @_;
 
-    my $cobrands = {};
+    my @bodies = values %{$row->bodies};
+    my %areas = map { %{$_->areas} } @bodies;
+
     foreach my $avail ( FixMyStreet::Cobrand->available_cobrand_classes ) {
         my $class = FixMyStreet::Cobrand->get_class_for_moniker($avail->{moniker});
         my $cobrand = $class->new({});
         next unless $cobrand->can('council_id');
-        $cobrands->{$cobrand->council_id} = $cobrand;
-    }
-
-    foreach my $body (split(/,/, $row->bodies_str)) {
-        next unless defined $body;
-        return $cobrands->{$body} if defined $cobrands->{$body};
+        return $cobrand if $areas{$cobrand->council_id};
     }
 
     return $self->next::method;
