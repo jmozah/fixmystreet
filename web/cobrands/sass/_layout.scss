@@ -43,16 +43,6 @@ h1 {
   position: relative;
 }
 
-//z-index stack order gets reset to 0 in ie6/7 if you position anything,
-//so to fix things we give it a high value (don't ask me why)
-//see: http://brenelz.com/blog/squish-the-internet-explorer-z-index-bug/
-//this affects #site-logo
-.ie6, .ie7 {
-  .container {
-    z-index:100;
-  }
-}
-
 .wrapper{
   display: table;
   caption-side: top;
@@ -106,26 +96,21 @@ h1 {
   .container {
     position: static;//reset position so the nav links become clickable
   }
+
+  .ie6 &,
+  .ie7 & {
+      height: 3em;
+      // Without this, the #site-logo is unclickable.
+      // Something to do with broken z-index nesting in IE6-7.
+      z-index: 2;
+  }
 }
+
 #site-logo {
   top: 0.9em;
   #{$left}: auto;
   position: absolute;
   z-index: 3;
-}
-.ie6, .ie7 {
-  #site-header {
-    height:3em;
-    .container {
-      //ie broken z-index bug: the site-logo won't appear if we don't do this
-      //doesn't seem to render the nav link unclickable like in other browsers
-      position: relative;
-    }
-  }
-  #site-logo {
-    position: absolute;
-    top:-3.25em;
-  }
 }
 
 #nav-link {
