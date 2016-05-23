@@ -85,7 +85,6 @@ $(function(){
         } else {
             // Make map full screen on non-mobile sizes.
             $html.removeClass('mobile');
-            position_map_box();
             if (typeof fixmystreet !== 'undefined') {
                 fixmystreet.state_map = 'full';
             }
