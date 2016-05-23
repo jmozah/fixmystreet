@@ -697,6 +697,25 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         // Store pin location in form fields, and check coverage of point
         fixmystreet_update_pin(lonlat);
 
+        lonlat.transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            fixmystreet.map.getProjectionObject()
+        );
+        fixmystreet.map.panDuration = 100;
+        fixmystreet.map.panTo(lonlat);
+
+        // It's possible to invoke the OpenLayers.Control `trigger` callback
+        // multiple times in a row (eg: by clicking on the map multiple times,
+        // to reposition your report).
+        // But there is some stuff we only want to happen the first time you
+        // switch from the "around" view to the "new" report view.
+        // So, here we check whether we've already transitioned into the "new"
+        // report view, and if so, we return from the callback early,
+        // skipping the remainder of the setup stuff.
+        if (fixmystreet.page == 'new') {
+            return;
+        }
+
         // If there are notes to be displayed, add the .with-notes class
         // to make the sidebar wider.
         if($('#report-a-problem-sidebar').length){
@@ -713,13 +732,6 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         $('#side').hide();
 
         fixmystreet.map.updateSize(); // required after changing the size of the map element
-
-        lonlat.transform(
-            new OpenLayers.Projection("EPSG:4326"),
-            fixmystreet.map.getProjectionObject()
-        );
-        fixmystreet.map.panDuration = 100;
-        fixmystreet.map.panTo(lonlat);
 
         $('#sub_map_links').hide();
         if ($('html').hasClass('mobile')) {
