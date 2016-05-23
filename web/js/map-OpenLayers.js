@@ -545,7 +545,7 @@ OpenLayers.Control.PanZoomFMS = OpenLayers.Class(OpenLayers.Control.PanZoom, {
         this._addButton("zoomworld", "zoom-world-mini.png");
         this._addButton("zoomout", "zoom-minus-mini.png");
         return this.div;
-    },
+    }
 });
 
 /* Overriding Permalink so that it can pass the correct zoom to OSM */
