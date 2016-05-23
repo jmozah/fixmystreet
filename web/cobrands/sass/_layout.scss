@@ -630,6 +630,10 @@ body.authpage {
   z-index:1;
 }
 
+#fms_pan_zoom {
+  top: 0.5em; // No need to avoid the mobile title bar any more
+}
+
 // Openlayers map controls (overrides)
 #fms_pan_zoom_panup,
 #fms_pan_zoom_pandown,
