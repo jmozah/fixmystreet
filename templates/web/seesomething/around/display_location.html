@@ -11,6 +11,7 @@
     );
 
     PROCESS "maps/${map.type}.html";
+    sidebar_html = PROCESS 'report/new/sidebar.html', js = 1, report.used_map = 1;
 
     INCLUDE 'header.html',
         title  => loc('Viewing a location')

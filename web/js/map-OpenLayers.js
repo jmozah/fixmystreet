@@ -18,7 +18,7 @@ function fixmystreet_update_pin(lonlat) {
             }
             $('#side-form-error').html('<h1>' + translation_strings.reporting_a_problem + '</h1><p>' + data.error + '</p>').show();
             $('#side-form').hide();
-            $('#map_box, #map_sidebar').removeClass('with-notes');
+            $('body').removeClass('with-notes');
             return;
         }
         $('#side-form, #site-logo').show();
@@ -455,7 +455,8 @@ $(function(){
         fixmystreet.drag.deactivate();
         $('#side-form').hide();
         $('#side').show();
-        $('#map_box, #map_sidebar').removeClass('with-notes');
+        $('body').removeClass('with-notes');
+        fixmystreet.map.updateSize(); // required after changing the size of the map element
         $('#sub_map_links').show();
         //only on mobile
         $('#mob_sub_map_links').remove();
@@ -714,8 +715,8 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 
         // If there are notes to be displayed, add the .with-notes class
         // to make the sidebar wider.
-        if($('#report-a-problem-sidebar').length){
-          $('#map_box, #map_sidebar').addClass('with-notes');
+        if ($('#report-a-problem-sidebar').length) {
+            $('body').addClass('with-notes');
         }
 
         /* For some reason on IOS5 if you use the jQuery show method it

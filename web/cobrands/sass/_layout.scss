@@ -344,7 +344,7 @@ body.mappage {
   height: auto; // stretch from bottom of header to bottom of window
   margin: 0;
 
-  &.with-notes {
+  .with-notes & {
     left: 44em;
   }
 }
@@ -361,7 +361,7 @@ body.mappage {
   background-color: #fff; // since no longer in the flow inside .content
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
-  &.with-notes {
+  .with-notes & {
     width: 42em;
     // TODO: Should have a bitmap image fallback for old browsers!!
     background-image: -webkit-linear-gradient(90deg, transparent 29em, #E9F2FF 29em);
