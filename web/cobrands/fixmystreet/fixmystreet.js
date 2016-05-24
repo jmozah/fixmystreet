@@ -72,6 +72,7 @@ $(function(){
                     height: 'auto',
                     margin: 0
                 });
+                $('#fms_pan_zoom').css({ top: '2.75em' });
                 $('.big-green-banner')
                     .addClass('mobile-map-banner')
                     .appendTo('#map_box')
@@ -102,6 +103,7 @@ $(function(){
                     .prependTo('#side')
                     .html(banner_text);
             }
+            $('#fms_pan_zoom').css({ top: '' });
             $('span.report-a-problem-btn').css({ cursor:'' }).off('.reportBtn');
         }
         last_type = type;

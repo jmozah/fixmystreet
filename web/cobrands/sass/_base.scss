@@ -1062,7 +1062,7 @@ html.js #map .noscript {
 // OpenLayers fix for navigation being top right
 // Left and right so that zoom can be left, pan right.
 #fms_pan_zoom {
-  top: 2.5em; // leave space for "Place pin on map" title bar on mobile
+  top: 0.5em; // This will be overridden in JS if there's a full screen map with banner
   #{$left}: 0.5em;
   #{$right}: 0.5em;
 }
