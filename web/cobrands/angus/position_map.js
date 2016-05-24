@@ -333,4 +333,4 @@ var add_streetlights = (function() {
     return add_streetlights;
 })();
 
-var slide_wards_down = 0;
+$(add_streetlights);
