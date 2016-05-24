@@ -835,7 +835,7 @@ textarea.form-error {
 
 // If the form is .with-notes, limit the width of the inputs
 // to make space for the #report-a-problem-sidebar.
-#side-form {
+#side-form, #side {
   .with-notes & {
     width: 27em;
   }
