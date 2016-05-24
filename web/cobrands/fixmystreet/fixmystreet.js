@@ -54,24 +54,14 @@ $(function(){
         if (last_type == type) { return; }
         if (type == 'mobile') {
             $html.addClass('mobile');
-            $('#map_box').prependTo('.content').css({
-                zIndex: '', position: '',
-                top: '', left: '', right: '', bottom: '',
-                width: '', height: '10em',
-                margin: ''
-            });
+            $('#map_box').css({ height: '10em' });
             if (typeof fixmystreet !== 'undefined') {
                 fixmystreet.state_map = ''; // XXX
             }
             if (typeof fixmystreet !== 'undefined' && fixmystreet.page == 'around') {
                 // Immediately go full screen map if on around page
                 $('#site-header').hide();
-                $('#map_box').prependTo('.wrapper').css({
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    height: 'auto',
-                    margin: 0
-                });
+                $('#map_box').prependTo('.wrapper').css({ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, height: 'auto', margin: 0 });
                 $('#fms_pan_zoom').css({ top: '2.75em' });
                 $('.big-green-banner')
                     .addClass('mobile-map-banner')
@@ -86,6 +76,7 @@ $(function(){
         } else {
             // Make map full screen on non-mobile sizes.
             $html.removeClass('mobile');
+            $('#map_box').css({ height: '' });
             if (typeof fixmystreet !== 'undefined') {
                 fixmystreet.state_map = 'full';
             }
@@ -95,6 +86,7 @@ $(function(){
                 if (cobrand !== 'oxfordshire') {
                     $('#site-header').show();
                 }
+                $('#map_box').prependTo('.content').css({ position: '', top: '', left: '', right: '', bottom: '', height: '', margin: '' });
                 if (typeof variation !== 'undefined' && variation === 1) {
                     banner_text = 'Click map to request a fix';
                 }
