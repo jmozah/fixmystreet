@@ -364,8 +364,8 @@ body.mappage {
   &.with-notes {
     width: 42em;
     // TODO: Should have a bitmap image fallback for old browsers!!
-    background-image: -webkit-linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
-    background-image: linear-gradient(90deg, transparent 28em, #E9F2FF 28em);
+    background-image: -webkit-linear-gradient(90deg, transparent 29em, #E9F2FF 29em);
+    background-image: linear-gradient(90deg, transparent 29em, #E9F2FF 29em);
   }
 }
 
@@ -837,7 +837,7 @@ textarea.form-error {
 // to make space for the #report-a-problem-sidebar.
 #side-form {
   .with-notes & {
-    width: 26em;
+    width: 27em;
   }
 }
 
