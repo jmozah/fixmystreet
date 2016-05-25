@@ -1,9 +1,6 @@
 @import "colours";
 @import "../sass/layout";
 
-// d523b431 - "Stevenage Home page styles"
-// 2a23e09f - Moved menu on map page and reverted to full header.
-
 // d523b431
 .nav-wrapper{
   .nav-wrapper-2{
@@ -77,73 +74,6 @@
 .iel8 {
     .content {
         border: none;
-    }
-}
-
-body.mappage {
-    // 15591af7 - Stevenage Map page changes
-    #stevenage_cc_header {
-        position: fixed;
-    }
-    // 2a23e09f - Moved menu on map page and reverted to full header.
-    .content {
-        margin-top: 9em;
-    }
-    // 15591af7 - Stevenage Map page changes
-    .nav-menu--main a, .nav-menu--main span {
-        padding: 0.5em 0.75em;
-    }
-    .nav-menu--main a.report-a-problem-btn {
-        padding: 0.5em 0.75em;
-        margin: 0 0 0 0.25em;
-    }
-    // 2a23e09f - Moved menu on map page and reverted to full header.
-    .nav-wrapper {
-        .nav-wrapper-2 {
-            position: absolute;
-            top: 11em;
-            bottom: auto;
-            left: 0;
-            width: 29em;
-            padding-top: 0.15em;
-            z-index: 0;
-            @include background(linear-gradient(#6b6969, #555454));
-        }
-    }
-}
-
-.ie6, .ie7 {
-    // 82d34958 - IE6/7 Positioning Tweaks on Council header
-    body.mappage {
-        // a7a564af - Stevenage IE8 position tweak
-        #stevenage_cc_header {
-            position:absolute;
-            top:0;
-        }
-        // ab958bc5 - IE6/7 Tweaks
-        .content {
-            margin-top:6em;
-        }
-        .nav-wrapper {
-            .nav-wrapper-2 {
-                position: absolute;
-            }
-        }
-    }
-}
-// a7a564a - Stevenage IE8 position tweak
-// 15591af7 - Stevenage Map page changes
-.ie8 {
-    body.mappage {
-        #stevenage_cc_header{
-            position:absolute;
-            top:0;
-        }
-        .nav-wrapper {
-            .nav-wrapper-2 {
-                position: absolute;
-            }
-        }
     }
 }
 
@@ -238,4 +168,50 @@ body.frontpage {
             }
         }
     }
+}
+
+body.mappage {
+    #site-header {
+        // We use the obscured #site-header to push the
+        // content sidebar down beyond .nav-wrapper-2
+        height: 3em;
+        display: block;
+    }
+
+    // Over-specific selector required to trump _layout.scss
+    .nav-wrapper .nav-wrapper-2 {
+        position: absolute;
+        top: 0;
+        padding: 0;
+        height: 4em;
+        background: #fff url("http://www.stevenage.gov.uk/Images/headerBG.jpg") repeat-x bottom left;
+    }
+
+    #site-logo {
+        top: 0.5em;
+    }
+
+    #main-nav {
+        float: right;
+        margin-right: 1em;
+        margin-top: 1em;
+    }
+
+    // again, !important to override _layout.scss
+    .nav-menu--main a,
+    .report-a-problem-btn {
+        padding: 0.5em 0.75em 0.4em 0.75em !important;
+        margin: 0 !important;
+    }
+
+    .nav-menu a {
+        color: #000;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a:focus,
+    a.report-a-problem-btn {
+        color: #fff;
+    }
+
 }
