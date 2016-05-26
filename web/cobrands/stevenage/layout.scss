@@ -188,6 +188,7 @@ body.mappage {
     }
 
     #site-logo {
+        position: absolute;
         top: 0.5em;
     }
 
@@ -199,6 +200,7 @@ body.mappage {
 
     // again, !important to override _layout.scss
     .nav-menu--main a,
+    .nav-menu--main span,
     .report-a-problem-btn {
         padding: 0.5em 0.75em 0.4em 0.75em !important;
         margin: 0 !important;
