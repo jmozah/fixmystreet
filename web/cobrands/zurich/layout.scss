@@ -2,6 +2,8 @@
 @import "../sass/layout";
 @import "zurich";
 
+$mappage-header-height: 7em;
+
 // Things to override from parent stylesheet
 
 // White background, so no shadow or margin needed.
@@ -90,7 +92,7 @@ body.mappage #site-logo-text {
         border-top: none;
     }
     .nav-wrapper-3 {
-        height: 99px;
+        height: 5em; // rough figure, enough to show the blue band, but less than .nav-wrapper-2 height
         padding-top: 18px;
     }
 }
@@ -99,7 +101,7 @@ body.mappage {
     .nav-wrapper {
         .nav-wrapper-2 {
             border-top: none;
-            height: 10em;
+            height: $mappage-header-height;
             padding: 0 10px;
             box-sizing: border-box;
         }
@@ -107,8 +109,6 @@ body.mappage {
     /* Ugh :( But first wrapper is the caption, second is the fixed (so first we
        can do padding on) so a third seems necessary for the background then. */
     .nav-wrapper-3 {
-        height: 99px;
-        padding-top: 18px;
         background: #fff url(logo_portal.x.jpg) top left repeat-x;
     }
     .content {
@@ -190,16 +190,20 @@ body.mappage {
 
     #map_sidebar,
     #map_box {
-      top: 10em;
+      top: $mappage-header-height;
+    }
+
+    #map_sidebar {
+        padding-top: 4em; // make space for the #zurich-main-nav
     }
 
     #zurich-main-nav {
       margin: 0;
       position: absolute;
       top: 7em;
+      left: 0;
+      width: 29em; // width of #map_sidebar (including padding)
       z-index: 1;
-      right: 10px; // to match .nav-wrapper-2 side padding
-      left: 10px; // to match .nav-wrapper-2 side padding
     }
 }
 
